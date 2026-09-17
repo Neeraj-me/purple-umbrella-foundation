@@ -387,6 +387,10 @@ p { color: var(--ink-700); }
 .stats-strip span { font-size: 0.88rem; color: var(--ink-500); }
 .bg-purple .stats-strip span { color: rgba(255,255,255,0.75); }
 @media (max-width: 700px) { .stats-strip { grid-template-columns: repeat(2, 1fr); } }
+.stats-strip.auto-fit { grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); }
+.impact-panel .stats-strip { margin-top: 18px; }
+.impact-panel.filled .stats-strip strong { color: #fff; }
+.impact-panel.filled .stats-strip span { color: rgba(255,255,255,0.75); }
 
 /* ---------- Timeline / process ---------- */
 .timeline { display: grid; gap: 22px; }
@@ -535,6 +539,67 @@ label {
 .team-card h3 { margin-bottom: 2px; }
 .team-card .team-role { font-size: 0.85rem; font-weight: 600; color: var(--purple-600); text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 12px; }
 .team-card p { font-size: 0.92rem; }
+.team-social {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 14px;
+}
+.team-social a {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--purple-50);
+  color: var(--purple-700);
+  transition: background 0.15s ease, color 0.15s ease, transform 0.15s ease;
+}
+.team-social a:hover { background: var(--purple-600); color: #fff; transform: translateY(-2px); }
+.team-social a svg { width: 16px; height: 16px; }
+
+/* ---------- Hero media (image / video / carousel — editable from /admin) ---------- */
+.blob-frame video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.hero-carousel {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+.hero-carousel img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 0.6s ease;
+}
+.hero-carousel img.is-active { opacity: 1; }
+.hero-carousel-dots {
+  position: absolute;
+  bottom: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 7px;
+  z-index: 2;
+}
+.hero-carousel-dots button {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255,255,255,0.55);
+  cursor: pointer;
+  padding: 0;
+}
+.hero-carousel-dots button.is-active { background: #fff; }
 
 /* ---------- Dynamic content states (used while content/*.json loads or is empty) ---------- */
 .content-empty {
@@ -830,6 +895,32 @@ label {
 }
 .impact-panel.filled ul li { background: rgba(255,255,255,0.1); color: #fff; }
 
+/* ---------- Festival / Work photo gallery ---------- */
+.gallery-item { padding: 0; overflow: hidden; }
+.gallery-item img { width: 100%; height: 220px; object-fit: cover; display: block; }
+.gallery-item figcaption { padding: 12px 16px; font-size: 0.85rem; color: var(--ink-600); }
+
+/* ---------- Partner logos ---------- */
+.partners-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 24px;
+  align-items: center;
+  margin-top: 30px;
+}
+.partner-logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 18px;
+  background: var(--paper-0);
+  border: 1px solid var(--border-200);
+  border-radius: var(--radius-lg);
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+.partner-logo:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
+.partner-logo img { max-width: 100%; max-height: 56px; object-fit: contain; }
+
 /* ---------- Long-form / legal pages ---------- */
 .prose { max-width: 760px; margin: 0 auto; }
 .prose h2 { margin-top: 40px; margin-bottom: 14px; }
@@ -855,4 +946,27 @@ label {
   border: 1px dashed var(--purple-300);
   padding: 2px 9px;
   border-radius: 6px;
+}
+
+/* ---------- Scroll-reveal (subtle fade/rise-in as sections enter view) ---------- */
+.reveal {
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.reveal.is-visible { opacity: 1; transform: translateY(0); }
+@media (prefers-reduced-motion: reduce) {
+  .reveal { opacity: 1; transform: none; transition: none; }
+}
+
+/* Slow ambient drift on the eyebrow dot to add a touch of life without content changes */
+.eyebrow .dot {
+  animation: pulse-dot 2.4s ease-in-out infinite;
+}
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.55; transform: scale(1.3); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .eyebrow .dot { animation: none; }
 }

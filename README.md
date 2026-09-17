@@ -17,15 +17,21 @@ purple-umbrella-foundation/
 ├── schools.html                For Schools
 ├── partners.html               For Partners
 ├── young-people.html           For Young People
-├── stories.html                 Stories & Resources — now a live "Our Work" feed, edited via /admin
+├── stories.html                 Stories & Resources — a live "Our Work" feed, edited via /admin
 ├── contact.html                  Contact details + contact form
 ├── privacy.html                   Privacy Policy — legal template, see below
 ├── terms.html                      Terms of Use — legal template, see below
 ├── css/style.css                   Full design system (colors, type, components)
 ├── js/main.js                       Mobile nav, active-link highlighting, accordion, demo form handling
-├── js/content-loader.js             Renders Team + Work sections from content/*.json (no build step)
-├── content/team.json                 Team member list — edited via /admin, shown on About Us
+├── js/content-loader.js             Renders every admin-editable section from content/*.json (no build step)
+├── content/home.json                 Home page hero (photo, video or carousel) — edited via /admin
+├── content/team.json                 Team member list (incl. social links) — edited via /admin, shown on About Us
 ├── content/work.json                 Work-update list — edited via /admin, shown on Stories & Resources
+├── content/festival.json             Festival edition banner + photo gallery — edited via /admin
+├── content/impact.json               Reach/Change figures — edited via /admin
+├── content/climate-promise.json      Participation indicators — edited via /admin
+├── content/journey.json              Our Journey timeline milestones — edited via /admin
+├── content/partners.json             Partner logos — edited via /admin
 ├── admin/index.html, admin/config.yml  The admin panel (Sveltia CMS) — see "Updating content" below
 ├── assets/logo.png                    Official Purple Umbrella logo (used in header, footer, hero art)
 ├── assets/favicon.ico, favicon-32.png, favicon-180.png   Favicon set generated from the official logo
@@ -38,22 +44,32 @@ purple-umbrella-foundation/
 
 No build step, no framework, no dependencies — plain HTML/CSS/JS. Open `index.html` in a browser to preview it, or serve the folder with any static file server (see **Local preview** below).
 
-## Updating content (Team members and Our Work)
+## Updating content — no developer needed
 
-The site has a small admin panel at **`/admin`** (for example `purpleumbrella.foundation/admin`) built with [Sveltia CMS](https://sveltiacms.app), a free open-source tool. Log in with **"Sign In with Token"** using a GitHub personal access token (no password is stored anywhere — GitHub itself issues the token). From there you can:
+The site has a small admin panel at **`/admin`** (for example `purpleumbrella.foundation/admin`) built with [Sveltia CMS](https://sveltiacms.app), a free open-source tool. Log in with **"Sign In with Token"** using a GitHub personal access token (no password is stored anywhere — GitHub itself issues the token). From there you can edit:
 
-- **Team** — add, edit, reorder, or remove team members (name, role, short bio, photo). Shown on the About Us page.
+- **Homepage** — the hero at the top of the Home page. Choose whether it shows a single photo, a video, or a rotating photo carousel, and upload the media. Until something is added, it keeps showing the Purple Umbrella logo.
+- **Team** — add, edit, reorder, or remove team members: name, role, short bio, photo, and social links (X/Twitter, Facebook, Instagram, LinkedIn — each optional, shown as small icons under their bio). Shown on the About Us page.
 - **Our Work** — add, edit, or remove work updates (title, date, category, image, short excerpt). Shown on the Stories & Resources page, newest first.
+- **Festival** — the "current edition" banner (label, title, description — e.g. next year's theme) and a photo gallery from the Festival. Shown on the Festival page.
+- **Our Impact** — Reach and Change figures. Leave these empty (the default) and the page keeps showing the honest "figures not yet verified" placeholder; fill them in once real numbers are confirmed and they replace the placeholder automatically.
+- **Climate Promise** — the participation indicators (e.g. "People Participating"). Same rule: left blank until the tracking platform is live, exactly as the brief requires.
+- **Our Journey** — the milestone timeline. The four already-confirmed milestones are pre-loaded; add a new one (e.g. "Festival 2027") any time without touching code.
+- **Partners** — partner organisation logos. This section is completely hidden on the live site until at least one verified partner is added — nothing fake ever shows.
 
 Saving a change in the admin panel commits it straight to the GitHub repository backing the site, which triggers Netlify to automatically rebuild and publish the update — usually live within a minute or two. This only works once the site's Netlify project is connected to a GitHub repository named `Neeraj-me/purple-umbrella-foundation` (see `admin/config.yml`); if that repo is ever renamed or recreated under a different name, update the `repo:` line in `admin/config.yml` to match.
 
-Both `content/team.json` and `content/work.json` start empty (`{"members": []}` and `{"items": []}`) — the corresponding section on the live site shows a friendly "nothing here yet" message until entries are added through `/admin`.
+Every `content/*.json` file starts empty (or, for Festival/Our Journey, pre-loaded with the real content already on the site) — until you add something through `/admin`, each section either shows a friendly "nothing here yet" message, keeps its safe default (like the logo, or the impact placeholders), or — for Partners — stays hidden entirely.
+
+### What this is, and isn't
+
+This is intentionally the lightweight version of a CMS: free hosting, no server or database to maintain, and anyone with the GitHub login can edit content directly. It does **not** include separate staff logins with different permission levels, an audit log of every edit, scheduled/timed publishing, or an automatic "upcoming vs. past events" system — those would require a real backend (a database plus a hosted server) and a genuinely bigger, ongoing-cost build. If the Foundation grows to the point that multiple staff need separate accounts and permissions, that's the point to revisit this decision.
 
 ## Design system
 
 - **Colour palette**: purple, light purple, white and grey only, as specified in the brief — no other hues. All tokens live at the top of `css/style.css` (`--purple-900` through `--purple-50`, plus the `--ink-*`/`--paper-*` greys). Change a token once and it updates everywhere.
 - **Typography**: Poppins throughout (headings and body), loaded from Google Fonts.
-- **Logo**: the official Purple Umbrella logo (`assets/logo.png`) is used in the header, footer, favicon and social-share image, and as the hero illustration on the Home and About pages. It has a transparent background, so it drops cleanly onto both light sections and the dark purple sections.
+- **Logo**: the official Purple Umbrella logo (`assets/logo.png`) is used in the header, footer, favicon and social-share image, and as the default Home-page hero and About-page illustration until real photos/video are added via `/admin`. It has a transparent background, so it drops cleanly onto both light sections and the dark purple sections.
 - **Iconography**: everywhere else — the four pillars, Festival track cards, and other decorative illustrations — uses original inline SVGs rather than the logo. No stock photography or generic nature clichés (polar bears, glaciers, wind turbines) — the brief asks for real photography once available, or original illustration in the meantime, which is what's used now.
 - **Components**: cards, icon badges, a 5-step process "stepper," a vertical "journey" timeline, Reach-vs-Change impact panels, pathway cards, SDG chips, and a sticky sub-navigation for longer pages — all defined in `css/style.css` and reused across pages rather than one-off styling.
 

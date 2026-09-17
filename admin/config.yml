@@ -13,6 +13,42 @@ media_folder: assets/uploads
 public_folder: /assets/uploads
 
 collections:
+  - name: home
+    label: Homepage
+    files:
+      - name: home_hero
+        label: Hero (top of the Home page)
+        file: content/home.json
+        format: json
+        fields:
+          - name: hero
+            label: Hero
+            widget: object
+            fields:
+              - name: media_type
+                label: What should show in the hero?
+                widget: select
+                options:
+                  - { label: "A single photo", value: image }
+                  - { label: "A video", value: video }
+                  - { label: "A rotating photo carousel", value: carousel }
+                default: image
+              - name: image
+                label: "Photo (used when 'A single photo' is selected)"
+                widget: image
+                required: false
+                hint: "Recommended: a real, landscape photo from a Purple Umbrella Festival or event."
+              - name: video
+                label: "Video file (used when 'A video' is selected)"
+                widget: file
+                required: false
+                hint: "Upload a short video, or leave blank and use a photo instead."
+              - name: gallery
+                label: "Carousel photos (used when 'A rotating photo carousel' is selected)"
+                widget: list
+                field: { name: image, label: Photo, widget: image }
+                required: false
+
   - name: team
     label: Team
     files:
@@ -30,6 +66,10 @@ collections:
               - { name: role, label: Role / Title, widget: string }
               - { name: bio, label: Short Bio, widget: text, required: false }
               - { name: photo, label: Photo, widget: image, required: false }
+              - { name: x_url, label: "X (Twitter) profile link", widget: string, required: false }
+              - { name: facebook_url, label: "Facebook profile link", widget: string, required: false }
+              - { name: instagram_url, label: "Instagram profile link", widget: string, required: false }
+              - { name: linkedin_url, label: "LinkedIn profile link", widget: string, required: false }
 
   - name: work
     label: Our Work
@@ -53,3 +93,107 @@ collections:
                 options: ["Festival Stories", "Student Voices", "Innovation Spotlight", "Partner News"]
               - { name: image, label: Image, widget: image, required: false }
               - { name: excerpt, label: Short Excerpt, widget: text }
+
+  - name: festival
+    label: Festival
+    files:
+      - name: festival_content
+        label: Festival Page
+        file: content/festival.json
+        format: json
+        fields:
+          - name: edition
+            label: Current Edition Banner
+            widget: object
+            fields:
+              - { name: tag, label: "Small label (e.g. '2026 Edition Theme')", widget: string }
+              - { name: title, label: Edition Theme Title, widget: string }
+              - { name: description, label: Description, widget: text }
+          - name: gallery
+            label: Festival Photos
+            widget: list
+            required: false
+            summary: "{{fields.caption}}"
+            fields:
+              - { name: image, label: Photo, widget: image }
+              - { name: caption, label: Caption, widget: string, required: false }
+
+  - name: impact
+    label: Our Impact
+    files:
+      - name: impact_content
+        label: Impact Numbers
+        file: content/impact.json
+        format: json
+        fields:
+          - name: reach_metrics
+            label: "Reach panel — figures (leave empty until verified)"
+            widget: list
+            required: false
+            summary: "{{fields.label}}: {{fields.value}}{{fields.unit}}"
+            fields:
+              - { name: label, label: "Label (e.g. 'Students engaged')", widget: string }
+              - { name: value, label: Number, widget: string }
+              - { name: unit, label: "Unit/suffix (e.g. '+', 'schools')", widget: string, required: false }
+          - name: change_metrics
+            label: "Change panel — figures (leave empty until verified)"
+            widget: list
+            required: false
+            summary: "{{fields.label}}: {{fields.value}}{{fields.unit}}"
+            fields:
+              - { name: label, label: Label, widget: string }
+              - { name: value, label: Number, widget: string }
+              - { name: unit, label: "Unit/suffix", widget: string, required: false }
+
+  - name: climate_promise
+    label: Climate Promise
+    files:
+      - name: climate_promise_content
+        label: Participation Indicators
+        file: content/climate-promise.json
+        format: json
+        fields:
+          - name: indicators
+            label: "Indicators (leave empty until the tracking platform is live)"
+            widget: list
+            required: false
+            summary: "{{fields.label}}: {{fields.value}}"
+            fields:
+              - { name: label, label: "Label (e.g. 'People Participating')", widget: string }
+              - { name: value, label: Number, widget: string }
+
+  - name: journey
+    label: Our Journey
+    files:
+      - name: journey_content
+        label: Timeline
+        file: content/journey.json
+        format: json
+        fields:
+          - name: milestones
+            label: Milestones
+            widget: list
+            summary: "{{fields.year}} — {{fields.title}}"
+            fields:
+              - { name: year, label: "Year (leave blank for a bookend entry like 'The Idea')", widget: string, required: false }
+              - { name: title, label: Title, widget: string }
+              - { name: description, label: Description, widget: text, required: false }
+              - { name: bookend, label: "Bookend styling (used for 'The Idea' / 'The Road Ahead')", widget: boolean, default: false }
+
+  - name: partners
+    label: Partners
+    files:
+      - name: partners_content
+        label: Partner Logos
+        file: content/partners.json
+        format: json
+        fields:
+          - name: partners
+            label: "Partners (only add once the relationship is verified)"
+            widget: list
+            required: false
+            summary: "{{fields.name}}"
+            fields:
+              - { name: name, label: Organisation Name, widget: string }
+              - { name: logo, label: Logo, widget: image }
+              - { name: website_url, label: Website Link, widget: string, required: false }

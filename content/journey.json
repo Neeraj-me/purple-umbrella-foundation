@@ -1,0 +1,40 @@
+{
+  "milestones": [
+    {
+      "year": "",
+      "title": "The Idea",
+      "description": "The Purple Umbrella concept begins with the belief that climate conversations need to become more engaging, inclusive and youth-led.",
+      "bookend": true
+    },
+    {
+      "year": "2025",
+      "title": "Purple Umbrella Foundation is established",
+      "description": "",
+      "bookend": false
+    },
+    {
+      "year": "2025",
+      "title": "The first Purple Umbrella Festival",
+      "description": "Brings together young people and schools around climate-focused experiences and participation.",
+      "bookend": false
+    },
+    {
+      "year": "2026",
+      "title": "The Festival expands",
+      "description": "The Foundation expands its platform through the Purple Umbrella Festival, with multiple tracks spanning theatre, film, innovation, talks, health, mental wellbeing and heritage.",
+      "bookend": false
+    },
+    {
+      "year": "2026",
+      "title": "Climate Promise launches",
+      "description": "Climate Promise develops as a year-round citizen action initiative.",
+      "bookend": false
+    },
+    {
+      "year": "",
+      "title": "The Road Ahead",
+      "description": "Building toward a community of one million young Climate Champions.",
+      "bookend": true
+    }
+  ]
+}

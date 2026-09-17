@@ -70,7 +70,8 @@
       </div>
       <div class="grid grid-2">
         <div class="impact-panel">
-          <span class="placeholder-tag">Figures: [INSERT VERIFIED NUMBER]</span>
+          <span class="placeholder-tag" id="reach-placeholder">Figures: [INSERT VERIFIED NUMBER]</span>
+          <div class="stats-strip auto-fit" id="reach-stats" style="display:none;"></div>
           <h3 style="margin-top:14px;">Reach</h3>
           <p>How far our platforms have travelled.</p>
           <ul>
@@ -82,7 +83,8 @@
           </ul>
         </div>
         <div class="impact-panel filled">
-          <span class="placeholder-tag" style="background:rgba(255,255,255,0.14); border-color:rgba(255,255,255,0.35); color:#fff;">Figures: [INSERT VERIFIED NUMBER]</span>
+          <span class="placeholder-tag" id="change-placeholder" style="background:rgba(255,255,255,0.14); border-color:rgba(255,255,255,0.35); color:#fff;">Figures: [INSERT VERIFIED NUMBER]</span>
+          <div class="stats-strip auto-fit" id="change-stats" style="display:none;"></div>
           <h3 style="margin-top:14px;">Change</h3>
           <p>What actually shifted because of it.</p>
           <ul>
@@ -196,5 +198,6 @@
   </div>
 </footer>
 <script src="js/main.js"></script>
+<script src="js/content-loader.js"></script>
 </body>
 </html>

@@ -61,4 +61,30 @@ document.addEventListener("DOMContentLoaded", function () {
   if (yearEl) {
     yearEl.textContent = new Date().getFullYear();
   }
+
+  /* Subtle scroll-reveal so sections feel alive as you scroll, instead of
+     the whole page appearing at once. Applies automatically to existing
+     component classes — no per-page markup changes needed. */
+  var revealTargets = document.querySelectorAll(
+    ".card, .section-head, .cta-banner, .theme-banner, .stepper-item, .journey-item, .impact-panel, .sdg-chip"
+  );
+  if (revealTargets.length) {
+    revealTargets.forEach(function (el) { el.classList.add("reveal"); });
+    if ("IntersectionObserver" in window) {
+      var io = new IntersectionObserver(
+        function (entries) {
+          entries.forEach(function (entry) {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("is-visible");
+              io.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.12, rootMargin: "0px 0px -40px 0px" }
+      );
+      revealTargets.forEach(function (el) { io.observe(el); });
+    } else {
+      revealTargets.forEach(function (el) { el.classList.add("is-visible"); });
+    }
+  }
 });
