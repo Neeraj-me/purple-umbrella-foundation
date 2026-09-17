@@ -1,3 +1,9 @@
 {
-  "partners": []
+  "partners": [
+    {
+      "name": "Bisleri International",
+      "logo": "/assets/uploads/bisleri logo.jpg",
+      "website_url": "https://www.bisleri.com/"
+    }
+  ]
 }
