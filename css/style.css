@@ -733,6 +733,15 @@ label {
   justify-content: center;
 }
 .blob-frame svg, .blob-frame img { width: 62%; height: 62%; object-fit: contain; }
+/* Once a real photo/video/carousel is loaded from the admin panel, it should
+   fill the frame edge-to-edge instead of sitting small and centered like the
+   default logo placeholder does. */
+.blob-frame.has-media img,
+.blob-frame.has-media video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
 
 .list-check { display: grid; gap: 14px; margin-top: 22px; }
 .list-check li { display: flex; gap: 12px; align-items: flex-start; font-size: 1rem; color: var(--ink-700); }
