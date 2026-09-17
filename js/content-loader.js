@@ -100,10 +100,13 @@
     if (!hero) return;
     var type = hero.media_type || 'image';
     if (type === 'video' && hero.video) {
+      container.classList.add('has-media');
       container.innerHTML = '<video src="' + escapeHTML(hero.video) + '" autoplay muted loop playsinline controls></video>';
     } else if (type === 'carousel' && hero.gallery && hero.gallery.length) {
+      container.classList.add('has-media');
       renderHeroCarousel(container, hero.gallery);
     } else if (hero.image) {
+      container.classList.add('has-media');
       container.innerHTML = '<img src="' + escapeHTML(hero.image) + '" alt="Purple Umbrella Festival">';
     }
     /* else: leave the existing fallback (logo) exactly as it is */
