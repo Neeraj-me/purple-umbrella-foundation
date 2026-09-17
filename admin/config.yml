@@ -1,0 +1,55 @@
+# yaml-language-server: $schema=https://unpkg.com/@sveltia/cms/schema/sveltia-cms.json
+#
+# Admin panel configuration for purpleumbrella.foundation.
+# Sign in at /admin using "Sign In with Token" — no password is stored anywhere;
+# GitHub issues a personal access token that only this browser remembers.
+
+backend:
+  name: github
+  repo: Neeraj-me/purple-umbrella-foundation
+  branch: main
+
+media_folder: assets/uploads
+public_folder: /assets/uploads
+
+collections:
+  - name: team
+    label: Team
+    files:
+      - name: team_list
+        label: Meet the Team
+        file: content/team.json
+        format: json
+        fields:
+          - name: members
+            label: Team Members
+            widget: list
+            summary: "{{fields.name}} — {{fields.role}}"
+            fields:
+              - { name: name, label: Full Name, widget: string }
+              - { name: role, label: Role / Title, widget: string }
+              - { name: bio, label: Short Bio, widget: text, required: false }
+              - { name: photo, label: Photo, widget: image, required: false }
+
+  - name: work
+    label: Our Work
+    files:
+      - name: work_list
+        label: Work Updates
+        file: content/work.json
+        format: json
+        fields:
+          - name: items
+            label: Updates
+            widget: list
+            summary: "{{fields.title}} — {{fields.date}}"
+            fields:
+              - { name: title, label: Title, widget: string }
+              - { name: date, label: Date, widget: datetime, format: "YYYY-MM-DD", time_format: false, picker_utc: true }
+              - name: category
+                label: Category
+                widget: select
+                required: false
+                options: ["Festival Stories", "Student Voices", "Innovation Spotlight", "Partner News"]
+              - { name: image, label: Image, widget: image, required: false }
+              - { name: excerpt, label: Short Excerpt, widget: text }
