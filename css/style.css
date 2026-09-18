@@ -1134,4 +1134,43 @@ label {
   font-family: var(--font-head);
   font-weight: 800;
   font-size: 5.5rem;
-  color:
+  color: rgba(255,255,255,0.08);
+  line-height: 1;
+}
+.case-card .tag { background: rgba(255,255,255,0.14); color: #fff; }
+.case-card h3 { color: #fff; margin-top: 14px; }
+.case-card p { color: rgba(255,255,255,0.78); }
+.case-card .case-link {
+  display: inline-flex; align-items: center; gap: 8px;
+  margin-top: 18px; padding-top: 18px; border-top: 1px solid rgba(255,255,255,0.18);
+  color: var(--purple-300); font-weight: 700; font-family: var(--font-head);
+}
+
+/* Slow ambient drift on the eyebrow dot to add a touch of life without content changes */
+.eyebrow .dot {
+  animation: pulse-dot 2.4s ease-in-out infinite;
+}
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.55; transform: scale(1.3); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .eyebrow .dot { animation: none; }
+}
+
+/* Inline text links pointing out to the Festival's own site (purplefest.in),
+   used inside body copy on light and dark/purple backgrounds respectively. */
+.inline-link {
+  color: var(--purple-700);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  font-weight: 600;
+}
+.inline-link:hover { color: var(--purple-900); }
+.inline-link-light {
+  color: #fff;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  font-weight: 600;
+}
+.inline-link-light:hover { color: var(--purple-100); }
