@@ -193,7 +193,7 @@ p { color: var(--ink-700); }
   color: var(--purple-900);
   flex-shrink: 0;
 }
-.brand-mark { width: 40px; height: 40px; flex-shrink: 0; }
+.brand-mark { width: 60px; height: 60px; flex-shrink: 0; }
 .brand small {
   display: block;
   font-family: var(--font-body);
@@ -966,6 +966,184 @@ label {
 .reveal.is-visible { opacity: 1; transform: translateY(0); }
 @media (prefers-reduced-motion: reduce) {
   .reveal { opacity: 1; transform: none; transition: none; }
+}
+
+/* Whole-section "rise up" as each section scrolls into view (below the fold only —
+   the hero is intentionally excluded so nothing is invisible on first load). */
+.section-rise {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.section-rise.is-visible { opacity: 1; transform: translateY(0); }
+@media (prefers-reduced-motion: reduce) {
+  .section-rise { opacity: 1; transform: none; transition: none; }
+}
+
+/* ---------- Pillars: Venn-style overlapping circles (Learn/Create/Innovate/Act) ---------- */
+.pillars-venn-wrap {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
+  align-items: center;
+}
+@media (max-width: 860px) {
+  .pillars-venn-wrap { grid-template-columns: 1fr; }
+}
+.pillars-venn {
+  position: relative;
+  width: 100%;
+  max-width: 420px;
+  aspect-ratio: 1;
+  margin: 0 auto;
+}
+.venn-circle {
+  position: absolute;
+  width: 62%;
+  height: 62%;
+  border-radius: 50%;
+  display: flex;
+  color: #fff;
+  font-family: var(--font-head);
+  font-weight: 700;
+}
+.venn-circle .venn-icon { width: 34px; height: 34px; margin-bottom: 6px; }
+.venn-circle .venn-icon svg { width: 100%; height: 100%; }
+.venn-label {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  width: 44%;
+}
+.venn-c1 { top: 0; left: 0; background: var(--purple-600); opacity: 0.94; z-index: 1; }
+.venn-c2 { top: 0; left: 38%; background: var(--purple-500); opacity: 0.94; z-index: 2; }
+.venn-c3 { top: 38%; left: 0; background: var(--purple-700); opacity: 0.94; z-index: 2; }
+.venn-c4 { top: 38%; left: 38%; background: var(--purple-300); opacity: 0.92; z-index: 1; }
+.venn-c4 .venn-label, .venn-c4 { color: var(--purple-900); }
+.venn-hub {
+  position: absolute;
+  top: 33%;
+  left: 33%;
+  width: 34%;
+  height: 34%;
+  border-radius: 50%;
+  background: var(--purple-900);
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow-lg);
+  border: 4px solid var(--paper-0);
+}
+.venn-hub img { width: 52%; height: 52%; object-fit: contain; }
+.venn-copy h2 { margin-bottom: 4px; }
+
+/* Entrance animation: circles slide in from four directions and settle into the overlap */
+.pillars-venn .venn-circle {
+  opacity: 0;
+  transition: transform 1.6s cubic-bezier(0.22, 1, 0.36, 1), opacity 1.2s ease;
+}
+.pillars-venn .venn-hub {
+  opacity: 0;
+  transform: scale(0.4);
+  transition: transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.6s ease;
+  transition-delay: 1.1s;
+}
+.pillars-venn .venn-c1 { transform: translateY(-110px); transition-delay: 0s; }
+.pillars-venn .venn-c2 { transform: translateX(110px); transition-delay: 0.22s; }
+.pillars-venn .venn-c3 { transform: translateY(110px); transition-delay: 0.44s; }
+.pillars-venn .venn-c4 { transform: translateX(-110px); transition-delay: 0.66s; }
+
+.pillars-venn.venn-in-view .venn-circle { opacity: 1; transform: translate(0, 0); }
+.pillars-venn.venn-in-view .venn-hub { opacity: 1; transform: scale(1); }
+
+@media (prefers-reduced-motion: reduce) {
+  .pillars-venn .venn-circle, .pillars-venn .venn-hub {
+    transition: none; transform: none; opacity: 1;
+  }
+}
+
+/* ---------- Hero: soft decorative shapes behind the photo/logo frame ---------- */
+.hero-art { position: relative; }
+.hero-art::before,
+.hero-art::after {
+  content: "";
+  position: absolute;
+  border-radius: 50%;
+  z-index: 0;
+}
+.hero-art::before {
+  width: 46%;
+  height: 46%;
+  background: var(--purple-300);
+  opacity: 0.5;
+  top: -10%;
+  right: -8%;
+}
+.hero-art::after {
+  width: 30%;
+  height: 30%;
+  background: var(--purple-600);
+  opacity: 0.35;
+  bottom: -8%;
+  left: -6%;
+}
+.hero-art .blob-frame { position: relative; z-index: 1; }
+
+/* ---------- Bold-block stat cards (Impact page) ---------- */
+.stats-strip.bold-blocks {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+@media (max-width: 700px) { .stats-strip.bold-blocks { grid-template-columns: repeat(1, 1fr); } }
+.stats-strip.bold-blocks > div {
+  background: var(--purple-900);
+  border-radius: var(--radius-md);
+  padding: 28px 20px;
+  text-align: center;
+  border-top: 4px solid var(--purple-300);
+}
+.stats-strip.bold-blocks strong {
+  display: block;
+  font-family: var(--font-head);
+  font-size: 2.4rem;
+  font-weight: 800;
+  color: var(--purple-300);
+}
+.stats-strip.bold-blocks span { color: #fff; font-weight: 500; }
+
+/* ---------- Case-study style work cards (Stories & Resources) ---------- */
+.case-card {
+  position: relative;
+  overflow: hidden;
+  background: var(--purple-900);
+  color: #fff;
+  border-radius: var(--radius-lg);
+  padding: 32px;
+}
+.case-card .case-num {
+  position: absolute;
+  top: -10px;
+  right: 16px;
+  font-family: var(--font-head);
+  font-weight: 800;
+  font-size: 5.5rem;
+  color: rgba(255,255,255,0.08);
+  line-height: 1;
+}
+.case-card .tag { background: rgba(255,255,255,0.14); color: #fff; }
+.case-card h3 { color: #fff; margin-top: 14px; }
+.case-card p { color: rgba(255,255,255,0.78); }
+.case-card .case-link {
+  display: inline-flex; align-items: center; gap: 8px;
+  margin-top: 18px; padding-top: 18px; border-top: 1px solid rgba(255,255,255,0.18);
+  color: var(--purple-300); font-weight: 700; font-family: var(--font-head);
 }
 
 /* Slow ambient drift on the eyebrow dot to add a touch of life without content changes */
