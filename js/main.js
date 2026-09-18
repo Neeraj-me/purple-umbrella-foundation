@@ -87,4 +87,50 @@ document.addEventListener("DOMContentLoaded", function () {
       revealTargets.forEach(function (el) { el.classList.add("is-visible"); });
     }
   }
+
+  /* Whole-section "rise up" as you scroll down the page. Targets the content
+     wrapper of every section below the hero (the hero is skipped so nothing
+     is invisible on first load, before any scrolling happens). */
+  var riseTargets = document.querySelectorAll("main > section.section > .container");
+  if (riseTargets.length) {
+    riseTargets.forEach(function (el) { el.classList.add("section-rise"); });
+    if ("IntersectionObserver" in window) {
+      var ioSection = new IntersectionObserver(
+        function (entries) {
+          entries.forEach(function (entry) {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("is-visible");
+              ioSection.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0, rootMargin: "0px 0px -8% 0px" }
+      );
+      riseTargets.forEach(function (el) { ioSection.observe(el); });
+    } else {
+      riseTargets.forEach(function (el) { el.classList.add("is-visible"); });
+    }
+  }
+
+  /* Venn pillars (Home page "Learn. Create. Innovate. Act."): the four circles
+     slide in from four directions and settle into the overlap once in view. */
+  var venn = document.querySelector(".pillars-venn");
+  if (venn) {
+    if ("IntersectionObserver" in window) {
+      var ioVenn = new IntersectionObserver(
+        function (entries) {
+          entries.forEach(function (entry) {
+            if (entry.isIntersecting) {
+              venn.classList.add("venn-in-view");
+              ioVenn.unobserve(venn);
+            }
+          });
+        },
+        { threshold: 0.35 }
+      );
+      ioVenn.observe(venn);
+    } else {
+      venn.classList.add("venn-in-view");
+    }
+  }
 });
