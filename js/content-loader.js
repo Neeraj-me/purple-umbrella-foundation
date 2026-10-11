@@ -241,6 +241,15 @@
     });
   }
 
+  /* ---------- Home: small festival photo preview (links out to the full gallery) ---------- */
+  function renderHomeGalleryPreview(container, photos) {
+    container.innerHTML = photos.map(function (p) {
+      var src = p.image || p;
+      var alt = p.caption || 'Purple Umbrella Festival photo';
+      return '<a class="gallery-preview-item" href="festival.html#gallery"><img src="' + escapeHTML(src) + '" alt="' + escapeHTML(alt) + '" loading="lazy"></a>';
+    }).join('');
+  }
+
   /* ---------- Impact: Reach / Change figures ---------- */
   function renderImpactMetrics(prefix, metrics) {
     var statsEl = document.getElementById(prefix + '-stats');
@@ -326,11 +335,17 @@
 
     var festivalGalleryEl = document.getElementById('festival-gallery');
     var festivalEditionEl = document.getElementById('festival-edition-title');
-    if (festivalGalleryEl || festivalEditionEl) {
+    var homeGalleryEl = document.getElementById('home-gallery-preview');
+    if (festivalGalleryEl || festivalEditionEl || homeGalleryEl) {
       loadJSON('content/festival.json', function (data) {
         if (!data) return;
         if (festivalEditionEl) renderFestivalEdition(data.edition);
         if (festivalGalleryEl) renderGallery(festivalGalleryEl, data.gallery, 'Photos from the Festival will appear here once added through the admin panel.');
+        if (homeGalleryEl && data.gallery && data.gallery.length) {
+          renderHomeGalleryPreview(homeGalleryEl, data.gallery.slice(0, 6));
+          var homeSection = homeGalleryEl.closest('section');
+          if (homeSection) homeSection.style.display = '';
+        }
       }, function () {});
     }
 
