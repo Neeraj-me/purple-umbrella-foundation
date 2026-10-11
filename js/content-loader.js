@@ -149,17 +149,96 @@
     if (descEl && edition.description) descEl.textContent = edition.description;
   }
 
+  var galleryLightboxEl = null;
+  function getGalleryLightbox() {
+    if (galleryLightboxEl) return galleryLightboxEl;
+    var el = document.createElement('div');
+    el.className = 'gallery-lightbox';
+    el.setAttribute('role', 'dialog');
+    el.setAttribute('aria-modal', 'true');
+    el.setAttribute('aria-label', 'Photo viewer');
+    el.innerHTML =
+      '<button class="gallery-lightbox-close" aria-label="Close">' + ICONS.x + '</button>' +
+      '<button class="gallery-lightbox-prev" aria-label="Previous photo">&#8249;</button>' +
+      '<div class="gallery-lightbox-stage"><img alt=""><p class="gallery-lightbox-caption"></p></div>' +
+      '<button class="gallery-lightbox-next" aria-label="Next photo">&#8250;</button>';
+    document.body.appendChild(el);
+
+    var imgEl = el.querySelector('.gallery-lightbox-stage img');
+    var capEl = el.querySelector('.gallery-lightbox-caption');
+    var photos = [];
+    var idx = 0;
+    var lastFocused = null;
+
+    function show(i) {
+      if (!photos.length) return;
+      idx = (i + photos.length) % photos.length;
+      var p = photos[idx];
+      var src = p.image || p;
+      var caption = p.caption || '';
+      imgEl.src = src;
+      imgEl.alt = caption || 'Purple Umbrella Festival photo';
+      capEl.textContent = caption;
+      capEl.style.display = caption ? '' : 'none';
+    }
+
+    function close() {
+      el.classList.remove('is-open');
+      document.body.classList.remove('gallery-lightbox-open');
+      document.removeEventListener('keydown', onKeydown);
+      if (lastFocused && lastFocused.focus) lastFocused.focus();
+    }
+
+    function onKeydown(e) {
+      if (e.key === 'Escape') close();
+      else if (e.key === 'ArrowLeft') show(idx - 1);
+      else if (e.key === 'ArrowRight') show(idx + 1);
+    }
+
+    el.querySelector('.gallery-lightbox-close').addEventListener('click', close);
+    el.querySelector('.gallery-lightbox-prev').addEventListener('click', function () { show(idx - 1); });
+    el.querySelector('.gallery-lightbox-next').addEventListener('click', function () { show(idx + 1); });
+    el.addEventListener('click', function (e) { if (e.target === el) close(); });
+
+    el.openGallery = function (newPhotos, startIndex, triggerEl) {
+      photos = newPhotos || [];
+      lastFocused = triggerEl || document.activeElement;
+      show(startIndex || 0);
+      el.classList.add('is-open');
+      document.body.classList.add('gallery-lightbox-open');
+      document.addEventListener('keydown', onKeydown);
+      el.querySelector('.gallery-lightbox-close').focus();
+    };
+
+    galleryLightboxEl = el;
+    return el;
+  }
+
   function renderGallery(container, photos, emptyMsg) {
+    container.classList.remove('grid', 'grid-3');
+    container.classList.add('gallery-masonry');
     if (!photos || !photos.length) {
       container.innerHTML = '<p class="content-empty">' + emptyMsg + '</p>';
       return;
     }
-    container.innerHTML = photos.map(function (p) {
+    container.innerHTML = photos.map(function (p, i) {
       var src = p.image || p;
       var alt = p.caption || 'Purple Umbrella Festival photo';
       var caption = p.caption ? '<figcaption>' + escapeHTML(p.caption) + '</figcaption>' : '';
-      return '<figure class="card gallery-item"><img src="' + escapeHTML(src) + '" alt="' + escapeHTML(alt) + '">' + caption + '</figure>';
+      return '<figure class="card gallery-item" data-i="' + i + '" tabindex="0" role="button" aria-label="View larger photo"><img src="' + escapeHTML(src) + '" alt="' + escapeHTML(alt) + '" loading="lazy">' + caption + '</figure>';
     }).join('');
+
+    var items = container.querySelectorAll('.gallery-item');
+    items.forEach(function (item) {
+      function open() {
+        var lb = getGalleryLightbox();
+        lb.openGallery(photos, parseInt(item.getAttribute('data-i'), 10), item);
+      }
+      item.addEventListener('click', open);
+      item.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(); }
+      });
+    });
   }
 
   /* ---------- Impact: Reach / Change figures ---------- */
